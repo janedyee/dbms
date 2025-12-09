@@ -15,11 +15,11 @@ jupyter-echarts-pypkg==0.1.2
 lml==0.0.2
 macropy3==1.1.0b2
 MarkupSafe==1.1.1
-Pillow==5.4.1
+Pillow==9.5.0
 pyecharts==0.5.11
 pyecharts-javascripthon==0.0.6
 pyecharts-jupyter-installer==0.0.3
 PyMySQL==0.9.3
-SQLAlchemy==1.3.0
+sqlalchemy==1.4.49 
 Werkzeug==0.14.1
 WTForms==2.2.1

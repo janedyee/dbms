@@ -1,55 +1,87 @@
 {% extends "admin/bases.html" %}
- {% import "admin/fy.html" as pg %}
+{% import "admin/fy.html" as pg %}
 
 {% block content %}
   
-    
-    <div class="x-body">
-      <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" method="post">
-           {{form.name}}
+    <style>
+        /* 当前页面：去掉左右留白，表格加边框 */
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
 
-            {{form.csrf_token}}
-          {{form.submit}}
-        </form>
-      </div>
-      <xblock>
-        <button class="layui-btn" onclick="x_admin_show('添加供应商','{{url_for("admin.addSupplier")}}','600','450')">添加供货商</button>
+        .supplier-table {
+            border: 1px solid #e6e6e6;
+        }
 
+        .supplier-table th,
+        .supplier-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
 
-      </xblock>
-      <table class="layui-table">
-        <thead>
-          <tr>
+    <div class="x-body page-container layui-anim layui-anim-up">
 
-            <th>供应商名称</th>
-            <th>供应商地址</th>
-             <th>供应商级别</th>
+        <div class="layui-row page-header">
+            <div class="layui-col-md8">
+                <h2 style="font-size: 20px; font-weight: 500; margin: 0;">供应商管理</h2>
+                <p style="color: #999; margin-top: 4px;">维护供应商基本信息，支持按名称查询与删除操作。</p>
+            </div>
+        </div>
 
-             <th >操作</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for i in page_data.items %}
-          <tr>
+        <fieldset class="layui-elem-field filter-card" style="margin-top: 16px;">
+            <legend>筛选条件</legend>
+            <div class="layui-field-box">
+                <form class="layui-form layui-row layui-col-space16 x-so" method="post">
+                    <div class="layui-col-md6 layui-col-sm8">
+                        {{form.name}}
+                    </div>
+                    <div class="layui-col-md6 layui-col-sm4 filter-actions">
+                        {{form.csrf_token}}
+                        {{form.submit}}
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
-            <td>{{i.supplier_name}}</td>
-            <td>{{i.supplier_addre}}</td>
-            <td>{{i.supplier_credit}}</td>
-              <td class="td-manage">
+        <xblock>
+            <button class="layui-btn" onclick="x_admin_show('添加供应商','{{ url_for('admin.addSupplier') }}','600','450')">添加供货商</button>
+        </xblock>
 
-              <a title="删除" onclick="member_del(this,'{{i.supplier_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+        <div class="layui-card">
+            <div class="layui-card-header">供应商列表</div>
+            <div class="layui-card-body" style="padding: 0;">
+                <table class="layui-table supplier-table" lay-size="sm" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>供应商名称</th>
+                            <th>供应商地址</th>
+                            <th>供应商级别</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in page_data.items %}
+                        <tr>
+                            <td>{{i.supplier_name}}</td>
+                            <td>{{i.supplier_addre}}</td>
+                            <td>{{i.supplier_credit}}</td>
+                            <td class="td-manage">
+                                <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{i.supplier_id}}')" href="javascript:;">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        {{pg.page(page_data,'admin.suppliers')}}
+        <div style="margin-top: 15px; text-align: right;">
+            {{pg.page(page_data,'admin.suppliers')}}
+        </div>
 
     </div>
+
     <script>
   function member_del(obj, id) {
               console.log(id)

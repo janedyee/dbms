@@ -1,7 +1,5 @@
-#-*- coding:utf-8 -*-
-# author:Agam
-# datetime:2018-11-05
 from .apps import db
+
 
 class client(db.Model):
     __tablename__ = 'client'
@@ -201,3 +199,27 @@ class warehouse(db.Model):
 
     good = db.relationship('goods', primaryjoin='warehouse.warehouse_goods_name == goods.goods_name', backref='warehouses')
     supplier = db.relationship('supplier', primaryjoin='warehouse.warehouse_supplier_name == supplier.supplier_name', backref='warehouses')
+
+
+class LoginLog(db.Model):
+    __tablename__ = 'login_log'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_count = db.Column(db.String(100))  # 登录账号
+    ip = db.Column(db.String(64))  # 登录 IP 地址
+    status = db.Column(db.String(20))  # success / fail / logout
+    reason = db.Column(db.String(255))  # 失败原因或补充说明
+    addtime = db.Column(db.DateTime, index=True)  # 记录时间
+
+
+class OperationLog(db.Model):
+    __tablename__ = 'operation_log'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_count = db.Column(db.String(100))  # 操作者账号
+    action = db.Column(db.String(100))  # 操作类型，如 delete_sales, add_supplier
+    target_type = db.Column(db.String(100))  # 目标对象类型，如 sales, supplier
+    target_id = db.Column(db.String(100))  # 目标对象主键或编号
+    result = db.Column(db.String(20))  # success / fail
+    remark = db.Column(db.String(255))  # 备注信息，如错误原因
+    addtime = db.Column(db.DateTime, index=True)  # 操作时间

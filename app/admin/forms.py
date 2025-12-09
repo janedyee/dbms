@@ -1,7 +1,3 @@
-# -*- coding:utf-8 -*-
-# author:Agam
-# datetime:2018-11-05
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FloatField, IntegerField
 from wtforms.validators import DataRequired
@@ -35,19 +31,6 @@ class LoginForm(FlaskForm):
             "class": "layui-input",
             "placeholder": "请输入密码！",
             "lay-verify": "required",
-        }
-    )
-    verify_code = StringField(
-        label='验证码',
-        validators=[
-            DataRequired()
-        ],
-        description="验证码",
-        render_kw={
-            "type": "text",
-            "lay-verify": "required",
-            "class": "layui-input-inline",
-            "placeholder": "请输入验证码！",
         }
     )
     submit = SubmitField(
@@ -195,6 +178,7 @@ class addsuppliers(FlaskForm):
             "class": "layui-input"
         }
     )
+
     credit = SelectField(
         label="供应商级别",
         validators=[
@@ -205,8 +189,10 @@ class addsuppliers(FlaskForm):
         description="供应商级别",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
+
     submit = SubmitField(
         "添加",
         render_kw={
@@ -385,6 +371,7 @@ class increasePurchaseOrders(FlaskForm):
             "placeholder": "商品名称",
             "autocomplete": "off",
             "lay-verify": "required",
+            "lay-ignore": "true",
         }
     )
     num = IntegerField(
@@ -411,6 +398,7 @@ class increasePurchaseOrders(FlaskForm):
         description="供应商名称",
         render_kw={
             "class": "form-control",
+            "lay-ignore": "true",
         }
     )
     users = {1: "1"}
@@ -423,6 +411,7 @@ class increasePurchaseOrders(FlaskForm):
         description="业务员名称",
         render_kw={
             "class": "form-control",
+            "lay-ignore": "true",
         }
     )
     submit = SubmitField(
@@ -483,6 +472,7 @@ class addsaleorder(FlaskForm):
             "placeholder": "商品名称",
             "autocomplete": "off",
             "lay-verify": "required",
+            "lay-ignore": "true",
         }
     )
     num = IntegerField(
@@ -509,6 +499,7 @@ class addsaleorder(FlaskForm):
         description="顾客名称",
         render_kw={
             "class": "form-control",
+            "lay-ignore": "true",
         }
     )
     # users = User.query.all()
@@ -523,6 +514,7 @@ class addsaleorder(FlaskForm):
         description="业务员名称",
         render_kw={
             "class": "form-control",
+            "lay-ignore": "true",
         }
     )
 
@@ -711,10 +703,11 @@ class addcustomes(FlaskForm):
     credit = SelectField(
         label="客户级别",
         coerce=int,
-        # choices=[(0, "客户级别"), (1, "一星"), (2, "二星"), (3, "三星"), (4, "四星"), (5, "五星")],
+        choices=[(0, "客户级别"), (1, "一星"), (2, "二星"), (3, "三星"), (4, "四星"), (5, "五星")],
         description="客户级别",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
     submit = SubmitField(
@@ -865,6 +858,136 @@ class adddutys(FlaskForm):
         }
     )
 
+
+# 添加员工
+class addadmin(FlaskForm):
+    name = StringField(
+        label='登录名',
+        validators=[
+            DataRequired()
+        ],
+        description="登录名",
+        render_kw={
+            "type": "text",
+            "placeholder": "请输入登录名",
+            "autocomplete": "off",
+            "lay-verify": "required",
+            "class": "layui-input"
+        }
+    )
+    pwd = PasswordField(
+        label='密码',
+        validators=[
+            DataRequired()
+        ],
+        description="密码",
+        render_kw={
+            "type": "password",
+            "placeholder": "请输入密码",
+            "autocomplete": "off",
+            "lay-verify": "required",
+            "class": "layui-input"
+        }
+    )
+    main = StringField(
+        label='姓名',
+        validators=[
+            DataRequired()
+        ],
+        description="姓名",
+        render_kw={
+            "type": "text",
+            "placeholder": "请输入姓名",
+            "autocomplete": "off",
+            "lay-verify": "required",
+            "class": "layui-input"
+        }
+    )
+    mail = StringField(
+        label='邮箱',
+        validators=[
+            DataRequired()
+        ],
+        description="邮箱",
+        render_kw={
+            "type": "text",
+            "placeholder": "请输入邮箱",
+            "autocomplete": "off",
+            "lay-verify": "required",
+            "class": "layui-input"
+        }
+    )
+    phone = StringField(
+        label='手机',
+        validators=[
+            DataRequired()
+        ],
+        description="手机",
+        render_kw={
+            "type": "text",
+            "placeholder": "请输入手机号",
+            "autocomplete": "off",
+            "lay-verify": "required",
+            "class": "layui-input"
+        }
+    )
+    sex = SelectField(
+        label="性别",
+        validators=[
+            DataRequired()
+        ],
+        coerce=int,
+        choices=[(0, "性别"), (1, "男"), (2, "女")],
+        description="请选择性别",
+        render_kw={
+            "class": "contrller",
+            "lay-ignore": "true",
+        }
+    )
+    section = SelectField(
+        label="所属部门",
+        validators=[
+            DataRequired()
+        ],
+        coerce=int,
+        description="所属部门",
+        render_kw={
+            "class": "contrller",
+            "lay-ignore": "true",
+        }
+    )
+    duty = SelectField(
+        label="职务",
+        validators=[
+            DataRequired()
+        ],
+        coerce=int,
+        description="职务",
+        render_kw={
+            "class": "contrller",
+            "lay-ignore": "true",
+        }
+    )
+    power = SelectField(
+        label="权限",
+        validators=[
+            DataRequired()
+        ],
+        coerce=int,
+        description="权限",
+        render_kw={
+            "class": "contrller",
+            "lay-ignore": "true",
+        }
+    )
+    submit = SubmitField(
+        "添加",
+        render_kw={
+            "class": "layui-btn",
+            "lay-filter": "subm",
+        }
+    )
+
 # 修改权限
 powers = {"1": 6}
 users = {"5": 6}
@@ -881,6 +1004,7 @@ class powerss(FlaskForm):
         description="请选择权限",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
 
@@ -894,6 +1018,7 @@ class powerss(FlaskForm):
         description="请选择权限",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
 
@@ -923,6 +1048,7 @@ class bumens(FlaskForm):
         description="用户名",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
 
@@ -936,6 +1062,7 @@ class bumens(FlaskForm):
         description="请选择职务",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
     sectionsr = SelectField(
@@ -948,6 +1075,7 @@ class bumens(FlaskForm):
         description="请选择部门",
         render_kw={
             "class": "contrller",
+            "lay-ignore": "true",
         }
     )
     submit = SubmitField(

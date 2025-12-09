@@ -1,75 +1,107 @@
 {% extends "admin/bases.html" %}
- {% import "admin/fy.html" as pg %}
+{% import "admin/fy.html" as pg %}
 
 {% block content %}
 
+<style>
+    /* 当前页面：去掉左右留白，表格加边框 */
+    .x-body.page-container {
+        margin: 0;
+        max-width: none;
+    }
 
-<div class="x-body">
-      <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" method="post">
-           {{form.goods_name}}
-            {{form.person_name}}
-            {{form.csrf_token}}
-          {{form.submit}}
-        </form>
-      </div>
-<xblock>
+    .sales-table {
+        border: 1px solid #e6e6e6;
+    }
 
-     <button class="layui-btn" onclick="x_admin_show('添加订单','{{url_for("admin.addsalesOrder")}}','1150','450')">添加订单</button>
+    .sales-table th,
+    .sales-table td {
+        border: 1px solid #e6e6e6;
+    }
 
-</xblock>
+    .sales-table th:last-child,
+    .sales-table td:last-child {
+        width: 220px;
+        white-space: nowrap;
+    }
+</style>
 
+<div class="x-body page-container layui-anim layui-anim-up">
 
+    <div class="layui-row page-header">
+        <div class="layui-col-md8">
+            <h2 style="font-size: 20px; font-weight: 500; margin: 0;">销售订单</h2>
+            <p style="color: #999; margin-top: 4px;">管理销售订单记录，支持条件查询、出库、退货和删除操作。</p>
+        </div>
+        <div class="layui-col-md4" style="text-align: right; margin-top: 4px;">
+            <button class="layui-btn" onclick="x_admin_show('添加订单','{{ url_for('admin.addsalesOrder') }}','1150','450')">添加订单</button>
+        </div>
+    </div>
 
-<!-- 下方详细表格内容 -->
-  <table class="layui-table">
-        <thead>
-          <tr>
+    <fieldset class="layui-elem-field filter-card" style="margin-top: 16px;">
+        <legend>筛选条件</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-row layui-col-space16 x-so" method="post">
+                <div class="layui-col-md4 layui-col-sm6">
+                    {{form.goods_name(class="layui-input", placeholder="请输入商品名称") }}
+                </div>
+                <div class="layui-col-md4 layui-col-sm6">
+                    {{form.person_name(class="layui-input", placeholder="请输入业务员或出货人") }}
+                </div>
+                <div class="layui-col-md4 layui-col-sm12 filter-actions">
+                    {{form.csrf_token}}
+                    {{form.submit(class="layui-btn")}}
+                </div>
+            </form>
+        </div>
+    </fieldset>
 
-              <th>商品名称</th>
-            <th>订单编号</th>
-            <th>商品數量</th>
-            <th>定金</th>
-            <th>出货人</th>
-              <th>客戶</th>
-            <th>出货时间</th>
-            <th >操作</th>
-            </tr>
-        </thead>
-        <tbody>
-         {% for i in page_data.items %}
-          <tr>
+    <div class="layui-card">
+        <div class="layui-card-header">销售订单列表</div>
+        <div class="layui-card-body" style="padding: 0;">
+            <table class="layui-table sales-table" lay-size="sm" style="margin: 0;">
+                <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>订单编号</th>
+                        <th>商品数量</th>
+                        <th>定金</th>
+                        <th>出货人</th>
+                        <th>客户</th>
+                        <th>出货时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in page_data.items %}
+                    <tr>
+                        <td>{{i.sales_goods_name}}</td>
+                        <td>{{i.sales_num}}</td>
+                        <td>{{i.sales_count}}</td>
+                        <td>{{i.sales_price}}</td>
+                        <td>{{i.client_name}}</td>
+                        <td>{{i.sales_user_name}}</td>
+                        <td>{{i.sales_addtime}}</td>
+                        <td class="td-manage">
+                            <a class="layui-btn layui-btn-xs" title="出库" onclick="ruku(this,'{{i.sales_id}}')" href="javascript:;">出库</a>
+                            <a class="layui-btn layui-btn-xs layui-btn-normal" title="退货" onclick="returngoods(this,'{{i.sales_id}}')" href="javascript:;" style="margin-left: 4px;">退货</a>
+                            <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{i.sales_id}}')" href="javascript:;" style="margin-left: 4px;">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-             <td>{{i.sales_goods_name}}</td>
-            <td>{{i.sales_num}}</td>
-            <td>{{i.sales_count}}</td>
-            <td>{{i.sales_price}}</td>
-              <td>{{i.client_name}}</td>
-             <td>{{i.sales_user_name}}</td>
-            <td>{{i.sales_addtime}}</td>
-           <td class="td-manage">
-              <a title="出库"  onclick="ruku(this,'{{i.sales_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe63c;</i>
-              </a>
-                <a title="退货"  onclick="returngoods(this,'{{i.sales_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe63c;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'{{i.sales_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-     {{pg.page(page_data,'admin.purchaseOrder')}}
+    <div style="margin-top: 15px; text-align: right;">
+        {{pg.page(page_data,'admin.salesOrder')}}
+    </div>
 
 </div>
 
-
-
- <script>
-     layui.use('laydate', function(){
+<script>
+    layui.use('laydate', function(){
         var laydate = layui.laydate;
 
         //执行一个laydate实例

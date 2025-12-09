@@ -5,20 +5,16 @@
 
     <!-- 顶部开始 -->
     <div class="container">
-        <div class="logo"><a href="{{url_for('admin.index')}}">We商贸后台管理</a></div>
+        <div class="logo"><a href="{{url_for('admin.index')}}">进销存管理系统</a></div>
         <div class="left_open">
             <i title="展开左侧栏" class="iconfont">&#xe699;</i>
         </div>
 
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">{{name}}</a>
-            <dl class="layui-nav-child"> <!-- 二级菜单 -->
-
-              <dd><a href="{{url_for('admin.logout')}}">退出</a></dd>
-            </dl>
+            <a href="{{ url_for('admin.logout') }}">{{ name }} | 退出</a>
           </li>
-          <li class="layui-nav-item to-index"><a href="{{url_for('home.index')}}">前台首页</a></li>
+          <li class="layui-nav-item to-index"><a href="{{ url_for('home.index') }}">前台首页</a></li>
         </ul>
 
     </div>
@@ -45,13 +41,12 @@
 
                         </a>
                     </li >
-                    <!--<li>-->
-                        <!--<a _href="仓库名管理.html">-->
-                            <!--<i class="iconfont">&#xe6a7;</i>-->
-                            <!--<cite>打卡处</cite>-->
-
-                        <!--</a>-->
-                    <!--</li>-->
+                    <li>
+                        <a _href="{{url_for('admin.left_admin_list',page=1)}}">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>离职员工</cite>
+                        </a>
+                    </li >
 
 
                 </ul>
@@ -158,41 +153,6 @@
                     </ul>
              </li>
 
-                <!--<li>-->
-                    <!--<a href="javascript:;">-->
-                        <!--<i class="iconfont">&#xe70b;</i>-->
-                        <!--<cite>财务管理</cite>-->
-                        <!--<i class="iconfont nav_right">&#xe697;</i>-->
-                    <!--</a>-->
-                    <!--<ul class="sub-menu">-->
-                        <!--<li>-->
-                            <!--<a _href="{{url_for('admin.employeeWages')}}">-->
-                                <!--<i class="iconfont">&#xe6a7;</i>-->
-                                <!--<cite>员工工资</cite>-->
-                            <!--</a>-->
-                        <!--</li >-->
-                       <!--<li>-->
-                            <!--<a _href="{{url_for('admin.procurementfunds')}}">-->
-                                <!--<i class="iconfont">&#xe6a7;</i>-->
-                                <!--<cite>采购资金</cite>-->
-                            <!--</a>-->
-                        <!--</li >-->
-                             <!--<li>-->
-                            <!--<a _href="{{url_for('admin.salesfunds')}}">-->
-                                <!--<i class="iconfont">&#xe6a7;</i>-->
-                                <!--<cite>销售资金</cite>-->
-                            <!--</a>-->
-                        <!--</li >-->
-                                 <!--<li>-->
-                            <!--<a _href="{{url_for('admin.procurementfunds')}}">-->
-                                <!--<i class="iconfont">&#xe6a7;</i>-->
-                                <!--<cite>总利润</cite>-->
-                            <!--</a>-->
-                        <!--</li >-->
-                    <!--</ul>-->
-             <!--</li>-->
-
-
 
             <li>
                 <a href="javascript:;">
@@ -286,7 +246,7 @@
     <div class="page-content-bg"></div>
 
     <div class="footer">
-        <div class="copyright">Copyright ©2018</div>
+        <div class="copyright">ccのdbms</div>
     </div>
 
 

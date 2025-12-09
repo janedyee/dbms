@@ -6,13 +6,29 @@
   
   <body>
    
-    <div class="x-body">
+    <style>
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
+
+        .section-table {
+            border: 1px solid #e6e6e6;
+        }
+
+        .section-table th,
+        .section-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+
+    <div class="x-body page-container">
 
       <xblock>
   <button class="layui-btn" onclick="x_admin_show('添加部门','{{url_for("admin.addSection")}}','900','250')">添加部门</button>
 
       </xblock>
-      <table class="layui-table">
+      <table class="layui-table section-table">
         <thead>
           <tr>
 
@@ -29,13 +45,8 @@
             <td>{{i.section_addtime}}</td>
 
             <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
-              </a>
-
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
+              <a class="layui-btn layui-btn-xs" onclick="member_stop(this,'{{ i.section_name }}')" href="javascript:;"  title="启用">启用/停用</a>
+              <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{ i.section_name }}')" href="javascript:;" style="margin-left: 4px;">删除</a>
             </td>
           </tr>
             {% endfor %}

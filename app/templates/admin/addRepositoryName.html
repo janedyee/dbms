@@ -3,27 +3,39 @@
 
 {% block content %}
 
-  
+<div class="x-body" style="padding: 24px 32px;">
+	<div class="layui-row" style="display: flex;justify-content: center;">
+		<div class="layui-col-xs12 layui-col-sm8 layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">新增仓库</div>
+				<div class="layui-card-body">
+					<form class="layui-form layui-form-pane" method="post">
 
-<div class="x-body">
-	<div class="layui-row">
-		<form class="layui-form layui-col-xs9 x-so layui-col-space10 layui-form-pane" method="post">
+						<div class="layui-form-item">
+							<label class="layui-form-label">{{ form.name.label }}</label>
+							<div class="layui-input-block">
+								{{ form.name }}
+							</div>
+						</div>
 
-		 <div class="layui-input-inline">
-			<label class="layui-form-label">{{form.name.label}}</label>
-			 {{form.name}}
+						<div class="layui-form-item">
+							<label class="layui-form-label">{{ form.local.label }}</label>
+							<div class="layui-input-block">
+								{{ form.local }}
+							</div>
+						</div>
+
+						{{ form.csrf_token }}
+
+						<div class="layui-form-item" style="text-align: right;">
+							{{ form.submit(class_="layui-btn layui-btn-normal") }}
+							<button type="reset" class="layui-btn layui-btn-primary" style="margin-left: 8px;">重置</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
 		</div>
-
-		 <div class="layui-input-inline">
-			<label class="layui-form-label">{{form.local.label}}</label>
-			 {{form.local}}
-		</div>
-
-{{form.csrf_token}}
-     {{form.submit}}
-      <button type="reset" class="layui-btn layui-btn-primary layui-input-inline">重置</button>
-
-		</form>
 	</div>
 </div>
 

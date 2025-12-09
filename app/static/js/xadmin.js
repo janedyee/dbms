@@ -6,28 +6,8 @@ $(function () {
         element = layui.element;
     });
 
-    //触发事件
-  var tab = {
-        tabAdd: function(title,url,id){
-          //新增一个Tab项
-          element.tabAdd('xbs_tab', {
-            title: title 
-            ,content: '<iframe tab-id="'+id+'" frameborder="0" src="'+url+'" scrolling="yes" class="x-iframe"></iframe>'
-            ,id: id
-          })
-        }
-        ,tabDelete: function(othis){
-          //删除指定Tab项
-          element.tabDelete('xbs_tab', '44'); //删除：“商品管理”
-          
-          
-          othis.addClass('layui-btn-disabled');
-        }
-        ,tabChange: function(id){
-          //切换到指定Tab项
-          element.tabChange('xbs_tab', id); //切换到：用户管理
-        }
-      };
+    // 简化：使用单 Tab 模式，不再动态新增/切换多个 Tab
+    // 统一通过更新现有 iframe 的 src 和 Tab 标题来切换页面
 
 
     tableCheck = {
@@ -106,10 +86,10 @@ $(function () {
        }
     })
 
-    //左侧菜单效果
-    // $('#content').bind("click",function(event){
+    // 左侧菜单：单 Tab 模式
     $('.left-nav #nav li').click(function (event) {
 
+        // 有子菜单的只是展开/收起
         if($(this).children('.sub-menu').length){
             if($(this).hasClass('open')){
                 $(this).removeClass('open');
@@ -123,27 +103,24 @@ $(function () {
                 $(this).siblings().children('.sub-menu').stop().slideUp();
                 $(this).siblings().find('.nav_right').html('&#xe697;');
                 $(this).siblings().removeClass('open');
+
+                // 不再自动打开第一个子菜单页面，交给用户自己点
             }
         }else{
-
+            // 叶子菜单：直接切换 iframe 内容和 Tab 标题
             var url = $(this).children('a').attr('_href');
             var title = $(this).find('cite').html();
-            var index  = $('.left-nav #nav li').index($(this));
 
-            for (var i = 0; i <$('.x-iframe').length; i++) {
-                if($('.x-iframe').eq(i).attr('tab-id')==index+1){
-                    tab.tabChange(index+1);
-                    event.stopPropagation();
-                    return;
-                }
-            };
-            
-            tab.tabAdd(title,url,index+1);
-            tab.tabChange(index+1);
+            if(url){
+                // 更新唯一 iframe 的 src
+                $('.x-iframe').attr('src', url);
+                // 更新 Tab 标题为当前页面名称
+                $('.layui-tab-title li.home').html(title);
+            }
         }
-        
+
         event.stopPropagation();
-         
+
     })
     
 })

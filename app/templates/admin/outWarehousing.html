@@ -1,11 +1,26 @@
-
 {% extends "admin/bases.html" %}
  {% import "admin/fy.html" as pg %}
 {% block content %}
 
 
 
-    <div class="x-body">
+    <style>
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
+
+        .out-table {
+            border: 1px solid #e6e6e6;
+        }
+
+        .out-table th,
+        .out-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+
+    <div class="x-body page-container">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" method="post">
             {{form.name}}
@@ -16,7 +31,7 @@
         </form>
       </div>
 
-      <table class="layui-table">
+      <table class="layui-table out-table">
         <thead>
           <tr>
 
@@ -43,9 +58,7 @@
             <td>{{i.stock_addtime}}</td>
             <td class="td-manage">
 
-              <a title="删除" onclick="member_del(this,'{{i.stock_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
+              <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{i.stock_id}}')" href="javascript:;">删除</a>
             </td>
           </tr>
     {% endfor %}

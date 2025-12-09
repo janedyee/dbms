@@ -1,58 +1,92 @@
-
 {% extends "admin/bases.html" %}
- {% import "admin/fy.html" as pg %}
+{% import "admin/fy.html" as pg %}
+
 {% block content %}
 
+    <style>
+        /* 只调整当前页面的布局和表格样式 */
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
 
-    <div class="x-body">
-        <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" method="post">
-           {{form.goods_name}}
-            {{form.person_name}}
+        .return-table {
+            border: 1px solid #e6e6e6;
+        }
 
-            {{form.csrf_token}}
-          {{form.submit}}
-        </form>
+        .return-table th,
+        .return-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+
+    <div class="x-body page-container layui-anim layui-anim-up">
+
+        <div class="layui-row page-header">
+            <div class="layui-col-md8">
+                <h2 style="font-size: 20px; font-weight: 500; margin: 0;">采购退货单</h2>
+                <p style="color: #999; margin-top: 4px;">查看与管理采购退货记录。</p>
+            </div>
         </div>
 
-      </div>
-      <table class="layui-table">
-        <thead>
-         <tr>
+        <fieldset class="layui-elem-field filter-card" style="margin-top: 16px;">
+            <legend>筛选条件</legend>
+            <div class="layui-field-box">
+                <form class="layui-form layui-row layui-col-space16 x-so" method="post">
+                    <div class="layui-col-md4 layui-col-sm6">
+                        {{form.goods_name}}
+                    </div>
+                    <div class="layui-col-md4 layui-col-sm6">
+                        {{form.person_name}}
+                    </div>
+                    <div class="layui-col-md4 layui-col-sm12 filter-actions">
+                        {{form.csrf_token}}
+                        {{form.submit}}
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
-             <th>商品编号</th>
-            <th>商品名称</th>
-            <th>数量</th>
-            <th>总价</th>
-            <th>供应商</th>
-            <th>退货人</th>
-            <th >操作</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for i in page_data.items %}
-         <tr>
+        <div class="layui-card">
+            <div class="layui-card-header">退货记录</div>
+            <div class="layui-card-body" style="padding: 0;">
+                <table class="layui-table return-table" lay-size="sm" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>商品编号</th>
+                            <th>商品名称</th>
+                            <th>数量</th>
+                            <th>总价</th>
+                            <th>供应商</th>
+                            <th>退货人</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in page_data.items %}
+                        <tr>
+                            <td>{{i.returngoods_num}}</td>
+                            <td>{{i.returngoods_goods}}</td>
+                            <td>{{i.returngoods_count}}</td>
+                            <td>{{i.returngoods_price}}</td>
+                            <td>{{i.returngoods_supplier}}</td>
+                            <td>{{i.returngoods_user_name}}</td>
+                            <td class="td-manage">
+                                <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{ i.returngoods_num }}')" href="javascript:;">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-           <td>{{i.returngoods_num}}</td>
-            <td>{{i.returngoods_goods}}</td>
-            <td>{{i.returngoods_count}}</td>
-            <td>{{i.returngoods_price}}</td>
-            <td>{{i.returngoods_supplier}}</td>
-            <td>{{i.returngoods_user_name}}</td>
-
-            <td class="td-manage">
-
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
-         {% endfor %}
-        </tbody>
-      </table>
-      {{pg.page(page_data,'admin.returnOrder')}}
+        <div style="margin-top: 15px; text-align: right;">
+            {{pg.page(page_data,'admin.returnOrder')}}
+        </div>
 
     </div>
+
     <script>
        layui.use('laydate', function(){
         var laydate = layui.laydate;
@@ -70,7 +104,6 @@
           layer.confirm('确认要删除吗？',function(index){
               //发异步删除数据
                     $.get(
-
                     'http://127.0.0.1:5000/admin/chushou?id='+id,
                     function(html){
                     location.reload();
@@ -94,7 +127,5 @@
         });
       }
     </script>
-
-
 
 {% endblock %}

@@ -3,7 +3,23 @@
 
 {% block content %}
     
-    <div class="x-body">
+    <style>
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
+
+        .customer-table {
+            border: 1px solid #e6e6e6;
+        }
+
+        .customer-table th,
+        .customer-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+    
+    <div class="x-body page-container">
  <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" method="post">
             {{form.name}}
@@ -19,7 +35,7 @@
   <button class="layui-btn" onclick="x_admin_show('添加客户名','{{url_for("admin.addCustomerz")}}','1200','450')">添加客户</button>
 
 </xblock>
-      <table class="layui-table">
+      <table class="layui-table customer-table">
         <thead>
           <tr>
 
@@ -42,9 +58,7 @@
             <td>{{i.client_credit}}</td>
 
             <td class="td-manage">
-              <a title="删除" onclick="member_del(this,'{{i.client_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
+              <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{i.client_id}}')" href="javascript:;">删除</a>
             </td>
           </tr>
         {% endfor %}

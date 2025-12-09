@@ -1,107 +1,122 @@
-{% extends "admin/bases.html" %}
+<div class="x-body layui-anim layui-anim-up" style="padding: 20px 25px;">
 
+        <!-- 顶部欢迎区 -->
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <blockquote class="layui-elem-quote" style="border-left: 5px solid #1890ff;">
+                    欢迎你：<span class="x-red">{{ name }}</span>
+                    <span style="margin-left: 16px;color: #999;">祝你工作顺利，数据一切正常。</span>
+                </blockquote>
+            </div>
+        </div>
 
-{% block content %}
-
-    <div class="x-body layui-anim layui-anim-up">
-        <blockquote class="layui-elem-quote">欢迎你：
-            <span class="x-red">{{name}}</span></blockquote>
-  <fieldset class="layui-elem-field">
+        <!-- 预警先知 -->
+        <fieldset class="layui-elem-field">
             <legend>预警先知</legend>
             <div class="layui-field-box">
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div class="layui-carousel x-admin-carousel x-admin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 90px;">
-                                <div carousel-item="">
-                                    <ul class="layui-row layui-col-space10 layui-this">
-
-                                        <li class="layui-col-xs2 ">
-                                            {% if names.warehouses <15 %}
-                                            <a href="javascript:;" class="x-admin-backlog-body layui-bg-red">
-                                                <h3>仓库预警</h3>
-                                                <p><cite class="layui-bg-blue">库存量过低</cite></p>
-                                            </a>
-                                                    {% else %}
-                                             <a href="javascript:;" class="x-admin-backlog-body layui-bg-gray">
-                                               <h3>仓库预警</h3>
-                                                <p><cite>存量正常</cite></p>
-                                            </a>
-
-                                            {% endif %}
-
-
-                                        </li>
-
-                                    </ul>
+                <div class="layui-row">
+                    <div class="layui-col-md12">
+                        {% if names.warehouses < 15 %}
+                        <div class="layui-card" style="border-left: 4px solid #ff4d4f;">
+                            <div class="layui-card-body" style="display: flex;align-items: center;justify-content: space-between;">
+                                <div>
+                                    <h3 style="font-size: 16px;color: #ff4d4f;margin-bottom: 4px;">仓库预警</h3>
+                                    <p style="margin: 0;color: #666;">当前库存量偏低，请及时补货，避免影响销售。</p>
+                                </div>
+                                <div style="font-size: 14px;">
+                                    <span class="layui-badge layui-bg-blue">当前库存：{{ names.warehouses }}</span>
                                 </div>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="layui-card" style="border-left: 4px solid #52c41a;">
+                            <div class="layui-card-body" style="display: flex;align-items: center;justify-content: space-between;">
+                                <div>
+                                    <h3 style="font-size: 16px;color: #52c41a;margin-bottom: 4px;">仓库正常</h3>
+                                    <p style="margin: 0;color: #666;">当前库存充足，可安心进行日常运营。</p>
+                                </div>
+                                <div style="font-size: 14px;">
+                                    <span class="layui-badge-rim">当前库存：{{ names.warehouses }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </fieldset>
-<!-- 预警使用下方jquery特效显示 -->
+        <!-- 预警使用下方jquery特效显示 -->
 
+        <!-- 数据统计 -->
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
             <div class="layui-field-box">
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div class="layui-carousel x-admin-carousel x-admin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 90px;">
-                                <div carousel-item="">
-                                    <ul class="layui-row layui-col-space10 layui-this">
-                                        <li class="layui-col-xs2">
-                                            <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>采购量</h3>
-                                                <p>
-                                                    <cite>{{names.purchases}}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>销售量</h3>
-                                                <p>
-                                                    <cite>{{names.saless}}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>仓库量</h3>
-                                                <p>
-                                                    <cite>{{names.warehouses}}</cite></p>
-                                            </a>
-                                        </li>
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-xs12 layui-col-sm4">
+                        <div class="layui-card">
+                            <div class="layui-card-header">采购量</div>
+                            <div class="layui-card-body" style="padding: 20px 18px;">
+                                <div style="font-size: 26px;font-weight: 600;color: #1890ff;">{{ names.purchases }}</div>
+                                <div style="margin-top: 8px;color: #999;font-size: 12px;">今日/本期累计采购数量</div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="layui-col-xs12 layui-col-sm4">
+                        <div class="layui-card">
+                            <div class="layui-card-header">销售量</div>
+                            <div class="layui-card-body" style="padding: 20px 18px;">
+                                <div style="font-size: 26px;font-weight: 600;color: #faad14;">{{ names.saless }}</div>
+                                <div style="margin-top: 8px;color: #999;font-size: 12px;">今日/本期累计销售数量</div>
+                            </div>
+                        </div>
+                    </div>
 
-                                    </ul>
-                                </div>
+                    <div class="layui-col-xs12 layui-col-sm4">
+                        <div class="layui-card">
+                            <div class="layui-card-header">仓库量</div>
+                            <div class="layui-card-body" style="padding: 20px 18px;">
+                                <div style="font-size: 26px;font-weight: 600;color: #52c41a;">{{ names.warehouses }}</div>
+                                <div style="margin-top: 8px;color: #999;font-size: 12px;">当前库存总量</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </fieldset>
+
+        <!-- 系统通知 -->
         <fieldset class="layui-elem-field">
             <legend>系统通知</legend>
             <div class="layui-field-box">
                 <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="60%">
+                        <col width="20%">
+                        <col width="20%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>通知内容</th>
+                            <th>类型</th>
+                            <th>时间</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr>
-                            <td >
-                                <a class="x-a" href="/" target="_blank">暂无</a>
+                            <td>
+                                <a class="x-a" href="/" target="_blank">暂无系统通知</a>
+                            </td>
+                            <td>
+                                <span class="layui-badge-rim">系统</span>
+                            </td>
+                            <td>
+                                <span style="color:#bbb;">--</span>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
         </fieldset>
 
-
-    </div>
-
-
-       
-{% endblock %}
+</div>

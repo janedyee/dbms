@@ -1,8 +1,3 @@
-#-*- coding:utf-8 -*-
-# author:Agam
-# datetime:2018-11-05
-
-
 import datetime
 import random
 import string
@@ -106,9 +101,14 @@ def pies():
     javascript_snippet = TRANSLATOR.translate(pie.options)
     return pie,javascript_snippet
 def pie_chart():
-    warehouses = db.session.query(func.count(warehouse.warehouse_goods_num),
-                                  goods.goods_name).filter(warehouse.warehouse_goods_name == goods.goods_name).group_by(
-        warehouse.warehouse_supplier_name
+    # 统计各商品的库存数量，按商品名分组，兼容 MySQL only_full_group_by 模式
+    warehouses = db.session.query(
+        func.count(warehouse.warehouse_goods_num),
+        goods.goods_name
+    ).filter(
+        warehouse.warehouse_goods_name == goods.goods_name
+    ).group_by(
+        goods.goods_name
     ).all()
     print(warehouses)
     attr = [i for _, i in warehouses]

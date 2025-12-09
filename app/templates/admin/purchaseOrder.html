@@ -1,81 +1,121 @@
 {% extends "admin/bases.html" %}
- {% import "admin/fy.html" as pg %}
+{% import "admin/fy.html" as pg %}
 
 {% block content %}
 
+<style>
+    /* 只调整当前页面的整体布局和表格样式 */
+    .x-body.page-container {
+        margin: 0;
+        max-width: none;
+    }
 
-<div class="x-body">
-      <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" method="post">
-           {{form.goods_name}}
-            {{form.person_name}}
-          {{ form.csrf_token }}
-            {{form.submit}}
-        </form>
-      </div>
-<xblock>
+    .purchase-table {
+        border: 1px solid #e6e6e6;
+    }
 
-  <button class="layui-btn" onclick="x_admin_show('添加订单','{{url_for("admin.increasePurchaseOrder")}}','1150','450')">添加订单</button>
+    .purchase-table th,
+    .purchase-table td {
+        border: 1px solid #e6e6e6;
+    }
 
-</xblock>
+    /* 操作列加宽，按钮一行显示 */
+    .purchase-table th:last-child,
+    .purchase-table td:last-child {
+        width: 220px;
+        white-space: nowrap;
+    }
+</style>
 
+<div class="x-body page-container layui-anim layui-anim-up">
 
+    <!-- 顶部标题与操作区 -->
+    <div class="layui-row page-header">
 
-<!-- 下方详细表格内容 -->
-  <table class="layui-table">
-        <thead>
-          <tr>
+        <div class="layui-col-md8">
+            <h2 style="font-size: 20px; font-weight: 500; margin: 0;">采购订单</h2>
+            <p style="color: #999; margin-top: 4px;">管理采购进货单，支持条件查询、入库、退货与删除操作。</p>
+        </div>
+        <div class="layui-col-md4" style="text-align: right; margin-top: 4px;">
+            <button class="layui-btn" onclick="x_admin_show('添加订单','{{ url_for('admin.increasePurchaseOrder') }}','1150','450')">添加订单</button>
+        </div>
+    </div>
 
-              <th>商品id</th>
-            <th>订单编号</th>
-            <th>商品名称</th>
-            <th>数量</th>
-              <th>单价</th>
-            <th>总金额</th>
-            <th>供应商</th>
-            <th>进货人</th>
-            <th>进货时间</th>
-            <th >操作</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for i in page_data.items %}
-          <tr>
+    <!-- 筛选条件 -->
+    <fieldset class="layui-elem-field filter-card">
 
-              <td>{{i.purchase_id}}</td>
-            <td>{{i.purchase_num}}</td>
-            <td>{{i.purchase_goods}}</td>
-            <td>{{i.purchase_count}}</td>
-              <td>{{i.goods_price}}</td>
-            <td>{{i.purchase_price}}</td>
-             <td>{{i.purchase_supplier}}</td>
-            <td>{{i.purchase_user_name}}</td>
-            <td>{{i.purchase_addtime}}</td>
-            <td class="td-manage">
-              <a title="入库"  onclick="ruku(this,'{{i.purchase_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe63c;</i>
-              </a>
-                <a title="退货"  onclick="returngoods(this,'{{i.purchase_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe63c;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'{{i.purchase_id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+        <legend>筛选条件</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-row layui-col-space16 x-so" method="post">
+                <div class="layui-col-md4 layui-col-sm6">
+                    <label class="filter-label">商品名称</label>
+                    {{ form.goods_name(class="layui-input", placeholder="请输入商品名称") }}
+                </div>
+                <div class="layui-col-md4 layui-col-sm6">
+                    <label class="filter-label">业务员</label>
+                    {{ form.person_name(class="layui-input", placeholder="请输入业务员姓名") }}
+                </div>
+                <div class="layui-col-md4 layui-col-sm12 filter-actions">
+                    {{ form.csrf_token }}
+                    {{ form.submit(class="layui-btn") }}
+                </div>
+            </form>
+        </div>
 
+    </fieldset>
 
-        {{pg.page(page_data,'admin.purchaseOrder')}}
+    <!-- 采购订单列表 -->
+    <div class="layui-card">
+        <div class="layui-card-header">采购订单列表</div>
+        <div class="layui-card-body" style="padding: 0;">
+            <table class="layui-table purchase-table" lay-size="sm" style="margin: 0;">
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th>订单编号</th>
+                        <th>商品名称</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>总金额</th>
+                        <th>供应商</th>
+                        <th>进货人</th>
+                        <th>进货时间</th>
+                        <th style="width: 120px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in page_data.items %}
+                    <tr>
+                        <td>{{ i.purchase_id }}</td>
+                        <td>{{ i.purchase_num }}</td>
+                        <td>{{ i.purchase_goods }}</td>
+                        <td>{{ i.purchase_count }}</td>
+                        <td>{{ i.goods_price }}</td>
+                        <td>{{ i.purchase_price }}</td>
+                        <td>{{ i.purchase_supplier }}</td>
+                        <td>{{ i.purchase_user_name }}</td>
+                        <td>{{ i.purchase_addtime }}</td>
+                        <td class="td-manage">
+                            <a class="layui-btn layui-btn-xs" title="入库" onclick="ruku(this,'{{ i.purchase_id }}')" href="javascript:;">入库</a>
+                            <a class="layui-btn layui-btn-xs layui-btn-normal" title="退货" onclick="returngoods(this,'{{ i.purchase_id }}')" href="javascript:;" style="margin-left: 4px;">退货</a>
+                            <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{ i.purchase_id }}')" href="javascript:;" style="margin-left: 4px;">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 分页 -->
+    <div style="margin-top: 15px; text-align: right;">
+        {{ pg.page(page_data, 'admin.purchaseOrder') }}
+    </div>
 
 </div>
 
-
-
- <script>
-       layui.use('laydate', function(){
+<script>
+    layui.use('laydate', function(){
         var laydate = layui.laydate;
 
         //执行一个laydate实例

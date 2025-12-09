@@ -1,0 +1,99 @@
+{% extends "admin/bases.html" %}
+{% import "admin/fy.html" as pg %}
+
+{% block content %}
+
+    <style>
+        /* 只针对当前页面的布局和表格样式做微调 */
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
+
+        .leave-staff-table {
+            border: 1px solid #e6e6e6;
+        }
+
+        .leave-staff-table th,
+        .leave-staff-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+
+    <div class="x-body page-container layui-anim layui-anim-up">
+
+        <div class="layui-row page-header">
+            <div class="layui-col-md8">
+                <h2 style="font-size: 20px; font-weight: 500; margin: 0;">离职员工列表</h2>
+                <p style="color: #999; margin-top: 4px;">查看已离职员工的基本信息与离职时间，可选择恢复账号。</p>
+            </div>
+        </div>
+
+        <div class="layui-card" style="margin-top: 16px;">
+            <div class="layui-card-header">离职员工</div>
+            <div class="layui-card-body" style="padding: 0;">
+                <table class="layui-table leave-staff-table" lay-size="sm" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>登录名</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>邮箱</th>
+                            <th>手机</th>
+                            <th>所属部门</th>
+                            <th>职务</th>
+                            <th>权限</th>
+                            <th>离职时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in page_data.items %}
+                        <tr>
+                            <td>{{i.user_id}}</td>
+                            <td>{{i.user_count}}</td>
+                            <td>{{i.user_name}}</td>
+                            <td>{{i.user_sex}}</td>
+                            <td>{{i.user_mail}}</td>
+                            <td>{{i.user_phone}}</td>
+                            <td>{{i.user_section}}</td>
+                            <td>{{i.user_duty}}</td>
+                            <td>{{i.user_power}}</td>
+                            <td>
+                                {% if i.user_addtime %}
+                                    {{ i.user_addtime.strftime('%Y-%m-%d %H:%M:%S') }}
+                                {% else %}
+                                    --
+                                {% endif %}
+                            </td>
+                            <td class="td-manage">
+                                <a class="layui-btn layui-btn-xs" title="恢复" onclick="member_recover(this,'{{ i.user_id }}')" href="javascript:;">恢复</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: right;">
+            {{pg.page(page_data,'admin.left_admin_list')}}
+        </div>
+
+    </div>
+    <script>
+
+      function member_recover(obj, id) {
+          layer.confirm('确认要恢复该员工吗？', function (index) {
+              $.get('{{ url_for("admin.recoveradmin") }}?id=' + id, function (html) {
+                  location.reload();
+              });
+              $(obj).parents("tr").remove();
+              layer.msg('已恢复!', {icon: 1, time: 1000});
+          });
+      }
+
+    </script>
+
+{% endblock %}

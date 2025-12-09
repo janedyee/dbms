@@ -6,15 +6,31 @@
   
   <body>
    
-    <div class="x-body">
+    <style>
+        .x-body.page-container {
+            margin: 0;
+            max-width: none;
+        }
+
+        .admin-table {
+            border: 1px solid #e6e6e6;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+
+    <div class="x-body page-container">
 
     <xblock>
-        <button class="layui-btn" onclick="x_admin_show('修改权限','{{url_for("admin.comminrole")}}')">修改权限</button>
-         <button class="layui-btn" onclick="x_admin_show('修改部门和职务','{{url_for("admin.bumen")}}')">修改部门和职务</button>
-
+        <button class="layui-btn" onclick="x_admin_show('添加员工','{{ url_for('admin.add_admin') }}','800','460')">添加员工</button>
+        <button class="layui-btn" onclick="x_admin_show('修改权限','{{ url_for('admin.comminrole') }}')">修改权限</button>
+        <button class="layui-btn" onclick="x_admin_show('修改部门和职务','{{ url_for('admin.bumen') }}')">修改部门和职务</button>
 
     </xblock>
-      <table class="layui-table">
+      <table class="layui-table admin-table">
         <thead>
           <tr>
 
@@ -28,8 +44,7 @@
             <th>职务</th>
             <th>权限</th>
             <th>加入时间</th>
-
-
+            <th>操作</th>
         </thead>
         <tbody>
     {% for i in page_data.items %}
@@ -44,9 +59,15 @@
             <td>{{i.user_section}}</td>
             <td>{{i.user_duty}}</td>
             <td>{{i.user_power}}</td>
-            <td>{{i.user_addtime}}</td>
-
-
+            <td>
+                {% if i.user_addtime %}
+                    {{ i.user_addtime.strftime('%Y-%m-%d %H:%M:%S') }}
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+            <td class="td-manage">
+              <a class="layui-btn layui-btn-xs layui-btn-danger" title="删除" onclick="member_del(this,'{{ i.user_id }}')" href="javascript:;">删除</a>
             </td>
           </tr>
         {% endfor %}
@@ -64,13 +85,13 @@
                 console.log(id)
                 $(obj).attr('title','停用')
                 $(obj).find('i').html('&#xe62f;');
-                    $.get(
+                $.get(
                     'http://127.0.0.1/admin/admin_pass?id='+id,
                     function(html){
                         console.log(id)
-                     parent.location.reload();
+                        parent.location.reload();
                     }
-                    );
+                );
                 $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
                 layer.msg('已停用!',{icon: 5,time:1000});
 
@@ -85,6 +106,15 @@
           });
       }
 
+      function member_del(obj, id) {
+          layer.confirm('确认要删除该员工吗？', function (index) {
+              $.get('{{ url_for("admin.delladmin") }}?id=' + id, function (html) {
+                  location.reload();
+              });
+              $(obj).parents("tr").remove();
+              layer.msg('已删除!', {icon: 1, time: 1000});
+          });
+      }
 
     </script>
 
